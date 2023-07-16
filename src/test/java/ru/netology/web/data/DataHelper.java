@@ -47,29 +47,15 @@ public class DataHelper {
         return new CardInfo("5559 0000 0000 0002", "0f3f5c2a-249e-4c3d-8287-09f7a039391d");
     }
 
-    @Value
-    public static class TransferAmount {
-        private String amount;
+    public static int generateInvalidAmount(int balance) {
+        int amount = Math.abs(balance) + new Random().nextInt(10000);
+        return amount;
     }
 
     public static int generateValidAmount(int balance) {
-        return new Random().nextInt(balance) + 1;
+        final int max = balance;
+        int amount = (int) (Math.random() * ++balance);
+        String validAmount = Integer.toString(amount);
+        return amount;
     }
-
-    public static int generateInvalidAmount(int balance) {
-        return Math.abs(balance) + new Random().nextInt(10000);
-    }
-
-
 }
-
-//* login: 'vasya'
-//      * password: 'qwerty123'
-//    * verification code (hardcoded): '12345'
-//  * cards:
-//* first:
-//* number: '5559 0000 0000 0001'
-//* balance: 10 000 RUB
-//* second:
-//* number: '5559 0000 0000 0002'
-//* balance: 10 000 RUB

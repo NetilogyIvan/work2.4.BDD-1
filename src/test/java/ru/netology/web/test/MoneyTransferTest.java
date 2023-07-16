@@ -8,9 +8,9 @@ import ru.netology.web.data.DataHelper;
 import ru.netology.web.page.DashboardPage;
 import ru.netology.web.page.LoginPage;
 
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.netology.web.data.DataHelper.generateValidAmount;
+import static ru.netology.web.data.DataHelper.*;
 
 public class MoneyTransferTest {
 
@@ -25,6 +25,7 @@ public class MoneyTransferTest {
         var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
         dashboardPage = verificationPage.validVerify(verificationCode);
 
+
     }
 
     @Test
@@ -36,12 +37,29 @@ public class MoneyTransferTest {
         var amount = generateValidAmount(firstCardBalance);
         var expectedFirstCardBalance = firstCardBalance - amount;
         var expectedSecondCardBalance = secondCardBalance + amount;
-        var transferPage = dashboardPage.selectCardToTransfer(secondCard);
+        var transferPage = dashboardPage.deposit2();
         dashboardPage = transferPage.makeValidTransfer(String.valueOf(amount), firstCard);
         var actualBalanceFirstCard = dashboardPage.getCardBalance(firstCard);
         var actualBalanceSecondCard = dashboardPage.getCardBalance(secondCard);
         assertEquals(expectedFirstCardBalance, actualBalanceFirstCard);
         assertEquals(expectedSecondCardBalance, actualBalanceSecondCard);
+    }
+
+    @Test
+    void shouldGetErrorMessageIfAmountMoreBalance() {
+        var firstCard = DataHelper.getFirstCardNumber();
+        var secondCard = DataHelper.getSecondCardNumber();
+        var firstCardBalance = dashboardPage.getCardBalance(firstCard);
+        var secondCardBalance = dashboardPage.getCardBalance(secondCard);
+        var amount = generateInvalidAmount(secondCardBalance);
+        var transferPage = dashboardPage.deposit1();
+        transferPage.makeValidTransfer(String.valueOf(amount), secondCard);
+        transferPage.findErrorMessage("Не хватает денег для перевода. Уменьшите сумму или переведите с друнгой карты или счета");
+        var actualBalanceFirstCard = dashboardPage.getCardBalance(firstCard);
+        var actualBalanceSecondCard = dashboardPage.getCardBalance(secondCard);
+        assertEquals(firstCardBalance, actualBalanceFirstCard);
+        assertEquals(secondCardBalance, actualBalanceSecondCard);
+
     }
 
 }

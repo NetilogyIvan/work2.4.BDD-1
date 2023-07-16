@@ -35,9 +35,17 @@ public class DashboardPage {
     }
 
 
-    public TransferPage selectCardToTransfer(DataHelper.CardInfo cardInfo) {
-        var text = cards.findBy(Condition.text(cardInfo.getCardNumber()));
-        $("button").click();
+    SelenideElement card1Info = $("[data-test-id= '92df3f1c-a033-48e6-8390-206f6b1f56c0']");
+    SelenideElement card2Info = $("[data-test-id= '0f3f5c2a-249e-4c3d-8287-09f7a039391d']");
+
+    public TransferPage deposit1() {
+        $("[data-test-id= '92df3f1c-a033-48e6-8390-206f6b1f56c0'] button").click();
+        return new TransferPage();
+
+    }
+
+    public TransferPage deposit2() {
+        $("[data-test-id= '0f3f5c2a-249e-4c3d-8287-09f7a039391d'] button").click();
         return new TransferPage();
     }
 
