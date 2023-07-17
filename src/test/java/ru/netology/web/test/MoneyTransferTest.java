@@ -52,9 +52,9 @@ public class MoneyTransferTest {
         var firstCardBalance = dashboardPage.getCardBalance(firstCard);
         var secondCardBalance = dashboardPage.getCardBalance(secondCard);
         var amount = generateInvalidAmount(secondCardBalance);
-        var transferPage = dashboardPage.deposit1();
+        var transferPage = dashboardPage.deposit2();
         transferPage.makeValidTransfer(String.valueOf(amount), secondCard);
-        transferPage.findErrorMessage("Не хватает денег для перевода. Уменьшите сумму или переведите с друнгой карты или счета");
+        transferPage.findErrorMessage("Не хватает денег для перевода. Уменьшите сумму или переведите с другой карты или счета");
         var actualBalanceFirstCard = dashboardPage.getCardBalance(firstCard);
         var actualBalanceSecondCard = dashboardPage.getCardBalance(secondCard);
         assertEquals(firstCardBalance, actualBalanceFirstCard);
